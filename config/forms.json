@@ -1,0 +1,20 @@
+[
+  {
+    "formId": "EVT001",
+    "title": "Young Professionals Fellowship",
+    "description": "Monthly gathering for young professionals to connect, network, and grow together.",
+    "status": "Active",
+    "configFile": "evt001.json",
+    "eventDate": "2026-06-30",
+    "capacity": 100
+  },
+  {
+    "formId": "EVT002",
+    "title": "Youth Summer Camp 2026",
+    "description": "An exciting 4-day summer retreat for junior high and high school students.",
+    "status": "Active",
+    "configFile": "evt002.json",
+    "eventDate": "2026-07-15",
+    "capacity": 150
+  }
+]

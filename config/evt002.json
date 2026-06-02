@@ -1,0 +1,156 @@
+{
+  "formId": "EVT002",
+  "title": "Youth Summer Camp 2026",
+  "description": "Register your child for the 2026 Youth Summer Camp. Please fill out all details carefully. The registration requires a signed medical release waiver to be uploaded.",
+  "submitButtonText": "Submit Camp Registration",
+  "successMessage": "Registration submitted successfully! Please check your email for the confirmation packet and packing checklist.",
+  "sections": [
+    {
+      "title": "Camper Details",
+      "description": "Provide personal details about the student attending the camp.",
+      "fields": [
+        {
+          "id": "camperName",
+          "label": "Camper's Full Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter camper's name",
+          "validation": {
+            "minLength": 3,
+            "maxLength": 60
+          }
+        },
+        {
+          "id": "camperDob",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true,
+          "helpText": "Camper must be between 11 and 18 years old."
+        },
+        {
+          "id": "gender",
+          "label": "Gender",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Male",
+            "Female"
+          ]
+        },
+        {
+          "id": "grade",
+          "label": "Grade in School (Fall 2026)",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Grade 7",
+            "Grade 8",
+            "Grade 9",
+            "Grade 10",
+            "Grade 11",
+            "Grade 12"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Parent / Guardian Contact",
+      "description": "Primary emergency contact info.",
+      "fields": [
+        {
+          "id": "parentName",
+          "label": "Parent/Guardian Full Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter parent name"
+        },
+        {
+          "id": "parentEmail",
+          "label": "Parent Email Address",
+          "type": "email",
+          "required": true,
+          "placeholder": "parent@example.com",
+          "validation": {
+            "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          }
+        },
+        {
+          "id": "parentPhone",
+          "label": "Emergency Phone Number",
+          "type": "text",
+          "required": true,
+          "placeholder": "555-0199",
+          "validation": {
+            "regex": "^\\+?[0-9\\s\\-]{7,15}$"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Medical & Permissions",
+      "description": "Important safety and consent details.",
+      "fields": [
+        {
+          "id": "hasMedicalCondition",
+          "label": "Does the camper have any medical conditions, allergies, or regular medications?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "medicalDetails",
+          "label": "Please Explain Medical Conditions / Medications",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Provide details of allergies, prescription schedules, etc.",
+          "showIf": {
+            "field": "hasMedicalCondition",
+            "operator": "equals",
+            "value": "Yes"
+          },
+          "validation": {
+            "minLength": 5,
+            "maxLength": 500
+          }
+        },
+        {
+          "id": "waiverUpload",
+          "label": "Signed Medical & Liability Waiver Form",
+          "type": "file",
+          "required": true,
+          "helpText": "Upload a scanned PDF or photo of the signed waiver. Allowed files: PDF, DOCX, PNG, JPG, JPEG (Max 10MB).",
+          "validation": {
+            "max": 10485760
+          }
+        },
+        {
+          "id": "tshirtSize",
+          "label": "T-Shirt Size",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Youth Medium",
+            "Youth Large",
+            "Adult Small",
+            "Adult Medium",
+            "Adult Large",
+            "Adult XL",
+            "Adult XXL"
+          ]
+        },
+        {
+          "id": "agreeRules",
+          "label": "I agree that the camper will abide by all camp safety and behavior guidelines.",
+          "type": "checkbox",
+          "required": true,
+          "options": [
+            "I agree to behavioral terms"
+          ]
+        }
+      ]
+    }
+  ]
+}
