@@ -652,7 +652,7 @@
           this.applyFilters();
         } catch (e) {
           console.error(e);
-          NotificationManager.show("Failed to fetch events from backend.", "error");
+          NotificationManager.show("Failed to fetch events from backend: " + e.message, "error");
           this.renderEmptyState();
         } finally {
           App.showLoading(false);
