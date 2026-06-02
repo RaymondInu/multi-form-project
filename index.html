@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grace & Life Community Portal - Event Registration</title>
+  <!-- Google Fonts: Outfit for titles, Inter for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Configuration for customized theme -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            title: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',  // light emerald
+              100: '#dcfce7',
+              500: '#10b981',  // Emerald
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            accent: {
+              50: '#fffbeb',  // warm amber
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom styles for micro-interactions and animations -->
+  <style type="text/css">
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', sans-serif;
+    }
+    /* Dynamic field container animations */
+    .field-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-full text-slate-800 antialiased">
+
+  <!-- 1. Header Component -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigateToHome()">
+          <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+            <!-- Elegant Leaf/Cross symbol in SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.28 0 4-1.72 4-4s-1.72-4-4-4-4 1.72-4 4 1.72 4 4 4zM12 12c-2.28 0-4 1.72-4 4s1.72 4 4 4 4-1.72 4-4-1.72-4-4-4z" />
+            </svg>
+          </div>
+          <div>
+            <span class="text-xl font-bold tracking-tight text-slate-900 font-title block">Grace Chapel</span>
+            <span class="text-[10px] text-brand-600 uppercase tracking-widest font-semibold block -mt-1">Community Hub</span>
+          </div>
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="#" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition" onclick="App.navigateToHome()">All Events</a>
+          <a href="#about" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">About Portals</a>
+          <a href="#help" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">Help & Support</a>
+        </nav>
+
+        <!-- API Endpoint Indicator/Settings Button -->
+        <div>
+          <button id="config-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition" onclick="ModalManager.openConfigModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span id="api-status-label">Setup API URL</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Hero Banner Component -->
+  <section id="hero-banner" class="relative overflow-hidden bg-slate-900 py-16 sm:py-20 text-white">
+    <!-- Grid Overlay Background -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25"></div>
+    
+    <!-- Aesthetic Ambient Orbs -->
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider bg-brand-500/10 text-brand-400 border border-brand-500/20 uppercase mb-4">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse"></span>
+        Connect with us
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-title max-w-3xl mx-auto leading-none">
+        Dynamic Event Registration
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light">
+        Welcome to Grace Chapel's unified sign-up portal. Browse active fellowships, retreats, and camps, and secure your attendance instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- API Endpoint Banner Warning (Shows when URL isn't set) -->
+    <div id="api-url-warning" class="hidden mb-8 bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div class="flex gap-3">
+        <div class="p-2 bg-amber-100 text-amber-800 rounded-lg shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-sm">Google Apps Script API URL required</h4>
+          <p class="text-xs text-slate-600 mt-0.5">Please specify your deployed Google Apps Script Web App executable URL to fetch live events and submit forms.</p>
+        </div>
+      </div>
+      <button class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition shrink-0" onclick="ModalManager.openConfigModal()">
+        Configure Endpoint
+      </button>
+    </div>
+
+    <!-- 3. Event Listing Section -->
+    <section id="event-listing-section">
+      <!-- Search and Filters -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+        <div class="relative w-full sm:max-w-xs">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input type="text" id="event-search" placeholder="Search events..." class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition">
+        </div>
+        <div class="text-xs font-semibold text-slate-500 shrink-0">
+          Showing <span id="event-count" class="text-brand-600">0</span> active events
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
+      </div>
+      
+      <!-- Empty State -->
+      <div id="events-empty-state" class="hidden text-center py-16 bg-white border border-dashed border-slate-300 rounded-2xl max-w-lg mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <h3 class="font-bold text-slate-800 text-lg">No Active Events</h3>
+        <p class="text-slate-500 text-sm mt-1 max-w-xs mx-auto">We couldn't find any upcoming registrations available right now. Please verify your settings or check back soon!</p>
+        <button class="mt-4 px-4 py-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 transition" onclick="FormList.fetchAndRender()">
+          Retry Loading
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. Dynamic Form Container -->
+    <section id="form-container" class="hidden max-w-3xl mx-auto">
+      <!-- Back navigation button -->
+      <button class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-brand-600 transition mb-6" onclick="App.navigateToHome()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Event List
+      </button>
+
+      <!-- Event Meta Panel -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+          <h2 id="form-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-title leading-tight">
+            Event Registration Title
+          </h2>
+          <span id="form-meta-badge" class="inline-block text-xs font-bold px-2.5 py-1 rounded-full"></span>
+        </div>
+        <p id="form-description" class="text-sm text-slate-600 leading-relaxed font-light"></p>
+      </div>
+
+      <!-- Live Dynamic Form -->
+      <form id="dynamic-registration-form" class="space-y-6" novalidate>
+        <!-- Sections and fields injected here -->
+        <div id="form-sections-container" class="space-y-6"></div>
+
+        <!-- Form submission bar -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-500 font-light flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-brand-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Your information is stored securely in our database.
+          </div>
+          <button type="submit" id="submit-form-btn" class="w-full sm:w-auto px-6 py-3 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white rounded-xl font-bold shadow-md shadow-brand-600/10 hover:shadow-brand-600/20 active:shadow-none hover:-translate-y-0.5 active:translate-y-0 transition text-sm flex items-center justify-center gap-2">
+            <span>Register Now</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- 5. Loading Overlay Component -->
+  <div id="loading-overlay" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex-col items-center justify-center text-white">
+    <div class="bg-white/10 border border-white/20 p-8 rounded-2xl flex flex-col items-center justify-center max-w-xs text-center backdrop-blur-md">
+      <!-- Premium CSS Loader -->
+      <div class="relative w-12 h-12 mb-4">
+        <div class="absolute inset-0 rounded-full border-4 border-slate-700/50"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-t-brand-500 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+      </div>
+      <h4 id="loading-title" class="font-bold text-white text-base">Processing</h4>
+      <p id="loading-message" class="text-xs text-slate-300 mt-1 font-light">Please wait a moment...</p>
+    </div>
+  </div>
+
+  <!-- 6. Success Modal Component -->
+  <div id="success-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all scale-95 opacity-0 duration-300">
+      <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-extrabold text-slate-900 text-center font-title">Registration Confirmed!</h3>
+      <p id="success-modal-message" class="text-sm text-slate-600 text-center mt-2 font-light leading-relaxed"></p>
+      
+      <!-- Submission Details block -->
+      <div class="my-4 bg-slate-50 rounded-xl p-3 border border-slate-200">
+        <div class="flex justify-between items-center text-xs border-b border-slate-200 pb-2 mb-2">
+          <span class="text-slate-500 font-medium">Submission ID</span>
+          <span id="success-modal-id" class="font-mono text-slate-700 select-all font-semibold"></span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-500 font-medium">Timestamp</span>
+          <span id="success-modal-time" class="text-slate-700 font-medium"></span>
+        </div>
+      </div>
+
+      <button class="w-full mt-2 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold shadow-md shadow-slate-900/10 transition" onclick="ModalManager.closeSuccessModal()">
+        Done
+      </button>
+    </div>
+  </div>
+
+  <!-- 7. Error Modal Component -->
+  <div id="error-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all scale-95 opacity-0 duration-300">
+      <div class="w-12 h-12 bg-red-100 text-red-800 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-extrabold text-slate-900 text-center font-title">An Error Occurred</h3>
+      <p id="error-modal-message" class="text-sm text-slate-600 text-center mt-2 font-light leading-relaxed"></p>
+      
+      <button class="w-full mt-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-bold shadow-md shadow-red-600/10 transition" onclick="ModalManager.closeErrorModal()">
+        Dismiss
+      </button>
+    </div>
+  </div>
+
+  <!-- Settings Configuration Modal -->
+  <div id="config-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all scale-95 opacity-0 duration-300">
+      <h3 class="text-lg font-bold text-slate-900 font-title mb-1">Developer API Configuration</h3>
+      <p class="text-xs text-slate-500 mb-4 font-light">Set your Google Apps Script endpoint. This configuration is stored locally in your browser's localStorage.</p>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Apps Script Web App Executable URL</label>
+          <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition">
+        </div>
+      </div>
+      
+      <div class="mt-6 flex justify-end gap-2 text-xs">
+        <button class="px-4 py-2 border border-slate-200 rounded-lg font-semibold text-slate-600 hover:bg-slate-50 transition" onclick="ModalManager.closeConfigModal()">Cancel</button>
+        <button class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg shadow-sm transition" onclick="ModalManager.saveConfigModal()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- 8. Footer Component -->
+  <footer class="bg-white border-t border-slate-200 mt-16 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left sm:flex sm:justify-between sm:items-center">
+      <div class="flex justify-center sm:justify-start items-center gap-2 mb-4 sm:mb-0">
+        <div class="w-6 h-6 bg-slate-700 rounded-md flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+          </svg>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 font-title">Grace Chapel Portal</span>
+      </div>
+      <p class="text-xs text-slate-500 font-light">&copy; 2026 Grace & Life Community Portal. Powered by Google Workspace & GitHub.</p>
+    </div>
+  </footer>
+
+  <!-- EMBEDDED JAVASCRIPT CODE -->
+  <script type="text/javascript">
+
+    /**
+     * Config management
+     */
+    const Config = {
+      apiUrl: localStorage.getItem('GAS_API_URL') || '',
+      setApiUrl(url) {
+        this.apiUrl = url.trim();
+        if (this.apiUrl) {
+          localStorage.setItem('GAS_API_URL', this.apiUrl);
+        } else {
+          localStorage.removeItem('GAS_API_URL');
+        }
+        App.updateApiUrlIndicators();
+      }
+    };
+
+    /**
+     * 1. ApiClient
+     * Handles HTTP communications with Google Apps Script Web App.
+     */
+    const ApiClient = {
+      async get(action, params = {}) {
+        if (!Config.apiUrl) throw new Error("API URL not configured.");
+        
+        const url = new URL(Config.apiUrl);
+        url.searchParams.append('action', action);
+        for (const [key, val] of Object.entries(params)) {
+          url.searchParams.append(key, val);
+        }
+
+        try {
+          const response = await fetch(url.toString(), {
+            method: 'GET',
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            throw new Error(`Server returned HTTP status ${response.status}`);
+          }
+          
+          const json = await response.json();
+          if (!json.success) {
+            throw new Error(json.error || 'Server reported request failure.');
+          }
+          return json.data;
+        } catch (e) {
+          console.error("API GET Error: ", e);
+          throw new Error("Unable to fetch data. Verify that your Web App API URL is active and authorized. Details: " + e.message);
+        }
+      },
+
+      async post(action, data = {}) {
+        if (!Config.apiUrl) throw new Error("API URL not configured.");
+        
+        try {
+          // Send payload using text/plain content-type.
+          // This prevents CORS preflight triggers (OPTIONS requests) which Google Apps Script web apps do not handle.
+          const response = await fetch(Config.apiUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              // Intentionally leaving content-type un-specified or text/plain
+            },
+            body: JSON.stringify({
+              action: action,
+              ...data
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Server returned HTTP status ${response.status}`);
+          }
+
+          const json = await response.json();
+          if (!json.success) {
+            throw new Error(json.error || 'Server rejected submission payload.');
+          }
+          return json.data;
+        } catch (e) {
+          console.error("API POST Error: ", e);
+          throw new Error("Action failed. Verify connectivity and web app script permissions. Details: " + e.message);
+        }
+      }
+    };
+
+    /**
+     * 2. Toast Notification System
+     */
+    const NotificationManager = {
+      show(message, type = 'info', duration = 4000) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `flex items-center gap-3 p-4 border rounded-xl shadow-lg pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 max-w-sm w-full bg-white`;
+        
+        // Colors & Icons based on type
+        let borderClass = 'border-slate-200';
+        let iconHtml = '';
+        
+        switch (type) {
+          case 'success':
+            borderClass = 'border-emerald-200 bg-emerald-50 text-emerald-800';
+            iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+            break;
+          case 'error':
+            borderClass = 'border-red-200 bg-red-50 text-red-800';
+            iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`;
+            break;
+          case 'warning':
+            borderClass = 'border-amber-200 bg-amber-50 text-amber-800';
+            iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`;
+            break;
+          default:
+            borderClass = 'border-slate-200 bg-slate-50 text-slate-700';
+            iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+        }
+
+        toast.className += ` ${borderClass}`;
+        toast.innerHTML = `
+          ${iconHtml}
+          <div class="text-xs font-semibold flex-grow">${message}</div>
+          <button class="text-slate-400 hover:text-slate-600 focus:outline-none shrink-0" onclick="this.parentElement.remove()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        `;
+
+        container.appendChild(toast);
+
+        // Animate entrance
+        setTimeout(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+
+        // Auto remove
+        setTimeout(() => {
+          toast.classList.add('translate-y-2', 'opacity-0');
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, duration);
+      }
+    };
+
+    /**
+     * 3. Modal Manager Component
+     */
+    const ModalManager = {
+      openConfigModal() {
+        const modal = document.getElementById('config-modal');
+        document.getElementById('api-url-input').value = Config.apiUrl;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+      },
+      closeConfigModal() {
+        const modal = document.getElementById('config-modal');
+        modal.firstElementChild.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 300);
+      },
+      saveConfigModal() {
+        const url = document.getElementById('api-url-input').value.trim();
+        Config.setApiUrl(url);
+        this.closeConfigModal();
+        NotificationManager.show("API endpoint configuration updated.", "success");
+        if (url) {
+          FormList.fetchAndRender();
+        }
+      },
+      
+      openSuccessModal(message, submissionId) {
+        document.getElementById('success-modal-message').textContent = message;
+        document.getElementById('success-modal-id').textContent = submissionId;
+        document.getElementById('success-modal-time').textContent = new Date().toLocaleString();
+        
+        const modal = document.getElementById('success-modal');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+      },
+      closeSuccessModal() {
+        const modal = document.getElementById('success-modal');
+        modal.firstElementChild.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          App.navigateToHome();
+        }, 300);
+      },
+
+      openErrorModal(message) {
+        document.getElementById('error-modal-message').textContent = message;
+        
+        const modal = document.getElementById('error-modal');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+      },
+      closeErrorModal() {
+        const modal = document.getElementById('error-modal');
+        modal.firstElementChild.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 300);
+      }
+    };
+
+    /**
+     * 4. FormList (Event list renderer)
+     */
+    const FormList = {
+      events: [],
+      filteredEvents: [],
+      
+      async fetchAndRender() {
+        if (!Config.apiUrl) {
+          this.renderEmptyState();
+          return;
+        }
+
+        App.showLoading(true, "Fetching Events", "Retrieving active registrations from database...");
+        try {
+          const response = await ApiClient.get('getForms');
+          this.events = response || [];
+          this.applyFilters();
+        } catch (e) {
+          console.error(e);
+          NotificationManager.show("Failed to fetch events from backend.", "error");
+          this.renderEmptyState();
+        } finally {
+          App.showLoading(false);
+        }
+      },
+
+      applyFilters() {
+        const searchQuery = document.getElementById('event-search').value.toLowerCase().trim();
+        
+        if (searchQuery) {
+          this.filteredEvents = this.events.filter(evt => 
+            evt.title.toLowerCase().includes(searchQuery) || 
+            evt.description.toLowerCase().includes(searchQuery) ||
+            evt.formId.toLowerCase().includes(searchQuery)
+          );
+        } else {
+          this.filteredEvents = [...this.events];
+        }
+
+        document.getElementById('event-count').textContent = this.filteredEvents.length;
+        this.renderGrid();
+      },
+
+      renderGrid() {
+        const grid = document.getElementById('events-grid');
+        const emptyState = document.getElementById('events-empty-state');
+        grid.innerHTML = '';
+
+        if (this.filteredEvents.length === 0) {
+          grid.classList.add('hidden');
+          emptyState.classList.remove('hidden');
+          return;
+        }
+
+        grid.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+
+        this.filteredEvents.forEach(evt => {
+          const card = document.createElement('div');
+          card.className = 'bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-slate-300 transition flex flex-col justify-between h-full';
+          
+          // Format Date
+          let dateStr = "TBA";
+          if (evt.eventDate) {
+            const date = new Date(evt.eventDate);
+            if (!isNaN(date.getTime())) {
+              dateStr = date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              });
+            }
+          }
+
+          // Badges and metadata
+          const isFull = evt.capacity && evt.spotsLeft <= 0; // spotsLeft returned dynamically or calculated
+          
+          card.innerHTML = `
+            <div>
+              <div class="flex justify-between items-start gap-2 mb-3">
+                <span class="inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
+                  ${evt.formId}
+                </span>
+                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  ${dateStr}
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight">${evt.title}</h3>
+              <p class="text-xs text-slate-500 line-clamp-3 mb-6 font-light leading-relaxed">${evt.description}</p>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-xs border-t border-slate-100 pt-4 mb-4">
+                <span class="text-slate-400 font-light">Capacity Limit:</span>
+                <span class="font-bold text-slate-700">${evt.capacity || 'Unlimited'} spots</span>
+              </div>
+              <button class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-center border transition flex items-center justify-center gap-1.5 ${
+                isFull 
+                ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
+                : 'bg-brand-600 text-white border-brand-600 hover:bg-brand-700 active:bg-brand-800'
+              }" ${isFull ? 'disabled' : ''} onclick="FormList.handleRegisterClick('${evt.formId}')">
+                <span>${isFull ? 'Sold Out' : 'Register Now'}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </div>
+          `;
+          
+          grid.appendChild(card);
+        });
+      },
+
+      renderEmptyState() {
+        document.getElementById('events-grid').classList.add('hidden');
+        document.getElementById('events-empty-state').classList.remove('hidden');
+        document.getElementById('event-count').textContent = '0';
+      },
+
+      async handleRegisterClick(formId) {
+        App.showLoading(true, "Loading Registration", "Fetching latest event details and fields...");
+        try {
+          const config = await ApiClient.get('getFormConfig', { formId });
+          const stats = await ApiClient.get('getEventStatistics', { formId });
+          
+          FormRenderer.initialize(config, stats);
+        } catch (e) {
+          console.error(e);
+          NotificationManager.show(e.message, "error");
+        } finally {
+          App.showLoading(false);
+        }
+      }
+    };
+
+    /**
+     * 5. Validation Engine
+     */
+    const ValidationEngine = {
+      validateField(field, value, isVisible) {
+        if (!isVisible) return null;
+
+        const isProvided = (value !== undefined && value !== null && value !== '' && !(Array.isArray(value) && value.length === 0));
+
+        if (field.required && !isProvided) {
+          return `${field.label} is required.`;
+        }
+
+        if (!isProvided) return null;
+
+        // Custom validation based on type
+        if (field.type === 'file') {
+          if (typeof value !== 'object' || !value.fileId || !value.fileUrl) {
+            return `Please wait for the file to upload or try uploading again.`;
+          }
+        }
+
+        const rules = field.validation || {};
+        
+        if (field.type === 'number') {
+          const num = Number(value);
+          if (isNaN(num)) return `${field.label} must be a valid number.`;
+          if (rules.min !== undefined && num < rules.min) {
+            return `${field.label} must be at least ${rules.min}.`;
+          }
+          if (rules.max !== undefined && num > rules.max) {
+            return `${field.label} cannot be greater than ${rules.max}.`;
+          }
+        } else {
+          const valStr = String(value);
+          if (rules.minLength !== undefined && valStr.length < rules.minLength) {
+            return `${field.label} must be at least ${rules.minLength} characters.`;
+          }
+          if (rules.maxLength !== undefined && valStr.length > rules.maxLength) {
+            return `${field.label} cannot exceed ${rules.maxLength} characters.`;
+          }
+          if (rules.regex) {
+            try {
+              const regexObj = new RegExp(rules.regex);
+              if (!regexObj.test(valStr)) {
+                return `${field.label} format is invalid.`;
+              }
+            } catch (err) {
+              console.error("Invalid regex constraint: ", rules.regex, err);
+            }
+          }
+        }
+        
+        return null;
+      },
+
+      validateForm(config, state, visibleFields) {
+        const errors = {};
+        config.sections.forEach(section => {
+          section.fields.forEach(field => {
+            const isVisible = visibleFields.has(field.id);
+            const error = this.validateField(field, state[field.id], isVisible);
+            if (error) {
+              errors[field.id] = error;
+            }
+          });
+        });
+        return errors;
+      }
+    };
+
+    /**
+     * 6. Conditional Logic Engine
+     */
+    const ConditionalLogicEngine = {
+      evaluateVisibility(config, state) {
+        const visibleFields = new Set();
+        
+        const checkCondition = (field) => {
+          if (!field.showIf) return true;
+          
+          const cond = field.showIf;
+          
+          // Parent field visibility check
+          const parentField = this.findField(config, cond.field);
+          if (parentField && !visibleFields.has(parentField.id)) {
+            return false;
+          }
+
+          const val = state[cond.field];
+          if (val === undefined || val === null) return false;
+
+          const valStr = String(val).toLowerCase().trim();
+          const targetStr = String(cond.value).toLowerCase().trim();
+
+          switch (cond.operator) {
+            case 'equals':
+              return valStr === targetStr;
+            case 'notEquals':
+              return valStr !== targetStr;
+            case 'contains':
+              return valStr.includes(targetStr);
+            default:
+              console.warn("Unsupported operator: ", cond.operator);
+              return true;
+          }
+        };
+
+        const allFields = [];
+        config.sections.forEach(sec => {
+          sec.fields.forEach(f => {
+            allFields.push(f);
+            if (!f.showIf) visibleFields.add(f.id);
+          });
+        });
+
+        // Iterative convergence solver
+        let changed = true;
+        let passes = 0;
+        while (changed && passes < 10) {
+          changed = false;
+          passes++;
+          for (const field of allFields) {
+            const isVis = visibleFields.has(field.id);
+            const shouldVis = checkCondition(field);
+            if (shouldVis && !isVis) {
+              visibleFields.add(field.id);
+              changed = true;
+            } else if (!shouldVis && isVis) {
+              visibleFields.delete(field.id);
+              changed = true;
+            }
+          }
+        }
+
+        return visibleFields;
+      },
+
+      findField(config, fieldId) {
+        for (const sec of config.sections) {
+          for (const f of sec.fields) {
+            if (f.id === fieldId) return f;
+          }
+        }
+        return null;
+      }
+    };
+
+    /**
+     * 7. Field Renderers Registry Pattern
+     */
+    class FieldRendererRegistry {
+      static renderers = {};
+      
+      static register(type, rendererInstance) {
+        this.renderers[type] = rendererInstance;
+      }
+
+      static render(field, value, onChange, error) {
+        const renderer = this.renderers[field.type];
+        if (!renderer) {
+          const fallback = document.createElement('div');
+          fallback.className = 'text-xs text-red-500';
+          fallback.textContent = `Unsupported field type: ${field.type}`;
+          return fallback;
+        }
+        return renderer.render(field, value, onChange, error);
+      }
+    }
+
+    /**
+     * Abstract Field Renderer base class
+     */
+    class BaseFieldRenderer {
+      createLabel(field) {
+        const label = document.createElement('label');
+        label.className = 'block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5';
+        label.textContent = field.label;
+        if (field.required) {
+          const req = document.createElement('span');
+          req.className = 'text-red-500 ml-0.5';
+          req.textContent = '*';
+          label.appendChild(req);
+        }
+        return label;
+      }
+
+      createHelpText(field) {
+        if (!field.helpText) return null;
+        const p = document.createElement('p');
+        p.className = 'text-[11px] text-slate-400 font-light mt-1';
+        p.textContent = field.helpText;
+        return p;
+      }
+
+      createErrorText(error) {
+        if (!error) return null;
+        const p = document.createElement('p');
+        p.className = 'text-xs text-red-500 font-medium mt-1.5 flex items-center gap-1';
+        p.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          ${error}
+        `;
+        return p;
+      }
+
+      applyFocusStyles(el, hasError) {
+        const err = 'border-red-500 focus:ring-red-200 focus:border-red-500';
+        const norm = 'border-slate-300 focus:ring-brand-500/20 focus:border-brand-500';
+        el.className = `w-full px-4 py-2 text-sm border rounded-xl focus:outline-none focus:ring-4 transition bg-white ${hasError ? err : norm}`;
+      }
+    }
+
+    // TEXT RENDERER
+    class TextFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = field.id;
+        input.placeholder = field.placeholder || '';
+        input.value = value || '';
+        this.applyFocusStyles(input, !!error);
+        
+        input.addEventListener('input', (e) => onChange(e.target.value));
+        container.appendChild(input);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('text', new TextFieldRenderer());
+
+    // EMAIL RENDERER
+    class EmailFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const input = document.createElement('input');
+        input.type = 'email';
+        input.id = field.id;
+        input.placeholder = field.placeholder || '';
+        input.value = value || '';
+        this.applyFocusStyles(input, !!error);
+        
+        input.addEventListener('input', (e) => onChange(e.target.value));
+        container.appendChild(input);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('email', new EmailFieldRenderer());
+
+    // NUMBER RENDERER
+    class NumberFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.id = field.id;
+        input.placeholder = field.placeholder || '';
+        input.value = value !== undefined ? value : '';
+        this.applyFocusStyles(input, !!error);
+        
+        input.addEventListener('input', (e) => {
+          const val = e.target.value === '' ? '' : Number(e.target.value);
+          onChange(val);
+        });
+        container.appendChild(input);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('number', new NumberFieldRenderer());
+
+    // DATE RENDERER
+    class DateFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const input = document.createElement('input');
+        input.type = 'date';
+        input.id = field.id;
+        input.value = value || '';
+        this.applyFocusStyles(input, !!error);
+        
+        input.addEventListener('input', (e) => onChange(e.target.value));
+        container.appendChild(input);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('date', new DateFieldRenderer());
+
+    // TEXTAREA RENDERER
+    class TextareaFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const area = document.createElement('textarea');
+        area.id = field.id;
+        area.placeholder = field.placeholder || '';
+        area.rows = 3;
+        area.value = value || '';
+        this.applyFocusStyles(area, !!error);
+        
+        area.addEventListener('input', (e) => onChange(e.target.value));
+        container.appendChild(area);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('textarea', new TextareaFieldRenderer());
+
+    // SELECT RENDERER
+    class SelectFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const select = document.createElement('select');
+        select.id = field.id;
+        this.applyFocusStyles(select, !!error);
+        
+        const placeholderOpt = document.createElement('option');
+        placeholderOpt.value = '';
+        placeholderOpt.textContent = field.placeholder || '-- Select an option --';
+        select.appendChild(placeholderOpt);
+
+        const options = field.options || [];
+        options.forEach(opt => {
+          const o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          if (value === opt) {
+            o.selected = true;
+          }
+          select.appendChild(o);
+        });
+
+        select.addEventListener('change', (e) => onChange(e.target.value));
+        container.appendChild(select);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('select', new SelectFieldRenderer());
+
+    // RADIO RENDERER
+    class RadioFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const listContainer = document.createElement('div');
+        listContainer.className = 'space-y-2 mt-2';
+
+        const options = field.options || [];
+        options.forEach((opt, idx) => {
+          const item = document.createElement('label');
+          item.className = 'flex items-center gap-3 cursor-pointer select-none py-1.5 px-3 border border-slate-100 hover:border-slate-200 rounded-xl transition bg-slate-50/50 hover:bg-slate-50';
+          
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = field.id;
+          radio.value = opt;
+          radio.checked = (value === opt);
+          radio.className = 'h-4.5 w-4.5 text-brand-600 focus:ring-brand-500 border-slate-300 transition shrink-0';
+          
+          radio.addEventListener('change', () => onChange(opt));
+          
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'text-sm text-slate-700';
+          labelSpan.textContent = opt;
+          
+          item.appendChild(radio);
+          item.appendChild(labelSpan);
+          listContainer.appendChild(item);
+        });
+        
+        container.appendChild(listContainer);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('radio', new RadioFieldRenderer());
+
+    // CHECKBOX RENDERER
+    class CheckboxFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const listContainer = document.createElement('div');
+        listContainer.className = 'space-y-2 mt-2';
+        
+        // Value for checkboxes should be stored as array of strings
+        let selectedValues = Array.isArray(value) ? [...value] : [];
+        if (value && !Array.isArray(value)) {
+          selectedValues = [value];
+        }
+
+        const options = field.options || [];
+        options.forEach((opt, idx) => {
+          const item = document.createElement('label');
+          item.className = 'flex items-start gap-3 cursor-pointer select-none py-2 px-3 border border-slate-100 hover:border-slate-200 rounded-xl transition bg-slate-50/50 hover:bg-slate-50';
+          
+          const box = document.createElement('input');
+          box.type = 'checkbox';
+          box.value = opt;
+          box.checked = selectedValues.includes(opt);
+          box.className = 'h-4.5 w-4.5 rounded text-brand-600 focus:ring-brand-500 border-slate-300 transition mt-0.5 shrink-0';
+          
+          box.addEventListener('change', (e) => {
+            if (e.target.checked) {
+              selectedValues.push(opt);
+            } else {
+              selectedValues = selectedValues.filter(v => v !== opt);
+            }
+            onChange(selectedValues);
+          });
+          
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'text-sm text-slate-700 leading-tight';
+          labelSpan.textContent = opt;
+          
+          item.appendChild(box);
+          item.appendChild(labelSpan);
+          listContainer.appendChild(item);
+        });
+        
+        container.appendChild(listContainer);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('checkbox', new CheckboxFieldRenderer());
+
+    // FILE RENDERER (DRAG & DROP, BASE64 UPLOADER)
+    class FileFieldRenderer extends BaseFieldRenderer {
+      render(field, value, onChange, error) {
+        const container = document.createElement('div');
+        container.appendChild(this.createLabel(field));
+        
+        const dropzone = document.createElement('div');
+        dropzone.className = `border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition flex flex-col items-center justify-center ${
+          error ? 'border-red-400 bg-red-50/30' : 'border-slate-300 hover:border-brand-500 bg-slate-50/50 hover:bg-slate-50'
+        }`;
+        
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.className = 'hidden';
+        
+        // Define internal status nodes
+        const defaultStateNode = document.createElement('div');
+        defaultStateNode.className = 'space-y-1.5 flex flex-col items-center';
+        defaultStateNode.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <div class="text-xs font-semibold text-slate-700">Click to upload or drag & drop</div>
+          <div class="text-[10px] text-slate-400">PDF, DOCX, PNG, JPG, JPEG (Max 10MB)</div>
+        `;
+        
+        const uploadingStateNode = document.createElement('div');
+        uploadingStateNode.className = 'hidden space-y-2 flex flex-col items-center py-2';
+        uploadingStateNode.innerHTML = `
+          <div class="relative w-8 h-8">
+            <div class="absolute inset-0 rounded-full border-2 border-slate-200"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-t-brand-600 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+          </div>
+          <div class="text-xs font-semibold text-slate-600" id="file-progress-lbl">Uploading file...</div>
+        `;
+        
+        const successStateNode = document.createElement('div');
+        successStateNode.className = 'hidden space-y-1 flex flex-col items-center py-1';
+        successStateNode.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <div class="text-xs font-bold text-slate-700" id="file-success-name">File uploaded successfully</div>
+          <a href="#" target="_blank" id="file-success-link" class="text-[10px] text-brand-600 underline font-medium hover:text-brand-700 transition">View File on Drive</a>
+          <button type="button" class="mt-2.5 px-3 py-1 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-[10px] font-bold transition flex items-center gap-1" id="file-remove-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            Remove file
+          </button>
+        `;
+
+        dropzone.appendChild(defaultStateNode);
+        dropzone.appendChild(uploadingStateNode);
+        dropzone.appendChild(successStateNode);
+        dropzone.appendChild(fileInput);
+        container.appendChild(dropzone);
+        
+        const help = this.createHelpText(field);
+        if (help) container.appendChild(help);
+        
+        const err = this.createErrorText(error);
+        if (err) container.appendChild(err);
+
+        // Adjust state if already uploaded
+        if (value && typeof value === 'object' && value.fileId && value.fileUrl) {
+          defaultStateNode.classList.add('hidden');
+          successStateNode.classList.remove('hidden');
+          successStateNode.querySelector('#file-success-name').textContent = value.fileName;
+          successStateNode.querySelector('#file-success-link').href = value.fileUrl;
+        }
+
+        // Dropzone interactions
+        dropzone.addEventListener('click', (e) => {
+          // Avoid triggering file selector when clicking remove file button
+          if (e.target.closest('#file-remove-btn') || e.target.closest('#file-success-link')) {
+            return;
+          }
+          fileInput.click();
+        });
+
+        // Drag & drop triggers
+        dropzone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropzone.classList.add('border-brand-500', 'bg-brand-50/20');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+          dropzone.classList.remove('border-brand-500', 'bg-brand-50/20');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropzone.classList.remove('border-brand-500', 'bg-brand-50/20');
+          if (e.dataTransfer.files.length > 0) {
+            handleFileUpload(e.dataTransfer.files[0]);
+          }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            handleFileUpload(e.target.files[0]);
+          }
+        });
+
+        successStateNode.querySelector('#file-remove-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          fileInput.value = '';
+          onChange(null); // Clear value
+          successStateNode.classList.add('hidden');
+          defaultStateNode.classList.remove('hidden');
+          NotificationManager.show("Attachment removed.", "info");
+        });
+
+        // Base64 file converter and uploader
+        const handleFileUpload = (file) => {
+          const allowedExtensions = ['pdf', 'docx', 'png', 'jpg', 'jpeg'];
+          const ext = file.name.split('.').pop().toLowerCase();
+          
+          if (!allowedExtensions.includes(ext)) {
+            NotificationManager.show(`File extension '.${ext}' is not permitted.`, "error");
+            return;
+          }
+
+          // Limit: 10MB (binary)
+          if (file.size > 10 * 1024 * 1024) {
+            NotificationManager.show("File size exceeds 10MB limit.", "error");
+            return;
+          }
+
+          // Show loader
+          defaultStateNode.classList.add('hidden');
+          uploadingStateNode.classList.remove('hidden');
+          uploadingStateNode.querySelector('#file-progress-lbl').textContent = "Reading file...";
+
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            const dataUrl = event.target.result;
+            const base64Data = dataUrl.split(',')[1];
+            
+            uploadingStateNode.querySelector('#file-progress-lbl').textContent = "Uploading to Drive...";
+            
+            try {
+              const fileObj = {
+                base64Data: base64Data,
+                fileName: file.name,
+                mimeType: file.type
+              };
+
+              const response = await ApiClient.post('uploadFile', { file: fileObj });
+              
+              // Response stores: fileId, fileUrl, fileName
+              onChange(response);
+              
+              uploadingStateNode.classList.add('hidden');
+              successStateNode.classList.remove('hidden');
+              successStateNode.querySelector('#file-success-name').textContent = response.fileName;
+              successStateNode.querySelector('#file-success-link').href = response.fileUrl;
+              NotificationManager.show("Attachment uploaded successfully.", "success");
+            } catch (err) {
+              console.error(err);
+              uploadingStateNode.classList.add('hidden');
+              defaultStateNode.classList.remove('hidden');
+              NotificationManager.show("Upload failed: " + err.message, "error");
+            }
+          };
+
+          reader.onerror = (err) => {
+            console.error(err);
+            uploadingStateNode.classList.add('hidden');
+            defaultStateNode.classList.remove('hidden');
+            NotificationManager.show("Failed to read local file.", "error");
+          };
+
+          reader.readAsDataURL(file);
+        };
+
+        return container;
+      }
+    }
+    FieldRendererRegistry.register('file', new FileFieldRenderer());
+
+    /**
+     * 8. FormRenderer (Handles dynamic form execution state, conditional triggers, submissions)
+     */
+    const FormRenderer = {
+      config: null,
+      stats: null,
+      state: {}, // Active answers
+      errors: {}, // Validation errors
+      visibleFields: new Set(), // Set of active field IDs
+
+      initialize(config, stats) {
+        this.config = config;
+        this.stats = stats;
+        this.state = { formId: config.formId };
+        this.errors = {};
+        this.visibleFields = new Set();
+        
+        // Initialize state variables for each field
+        config.sections.forEach(sec => {
+          sec.fields.forEach(f => {
+            // Set defaults: Checkboxes are arrays, others are null/empty
+            if (f.type === 'checkbox') {
+              this.state[f.id] = [];
+            } else {
+              this.state[f.id] = '';
+            }
+          });
+        });
+
+        // Initial visibility pass
+        this.updateVisibility();
+
+        // Render UI
+        this.renderForm();
+        App.navigateToForm();
+      },
+
+      updateVisibility() {
+        this.visibleFields = ConditionalLogicEngine.evaluateVisibility(this.config, this.state);
+      },
+
+      handleFieldChange(fieldId, val) {
+        this.state[fieldId] = val;
+        
+        // Re-evaluate visibility
+        const oldVisible = new Set(this.visibleFields);
+        this.updateVisibility();
+        
+        // Clear value for hidden fields
+        this.config.sections.forEach(sec => {
+          sec.fields.forEach(f => {
+            if (!this.visibleFields.has(f.id) && oldVisible.has(f.id)) {
+              if (f.type === 'checkbox') {
+                this.state[f.id] = [];
+              } else {
+                this.state[f.id] = '';
+              }
+            }
+          });
+        });
+
+        // Trigger visual transitions of hidden fields without full re-render
+        this.animateConditionalToggles(oldVisible);
+        
+        // Clear error inline on edit
+        if (this.errors[fieldId]) {
+          delete this.errors[fieldId];
+          this.reRenderField(fieldId);
+        }
+      },
+
+      animateConditionalToggles(oldVisible) {
+        this.config.sections.forEach(sec => {
+          sec.fields.forEach(f => {
+            const container = document.getElementById(`field-container-${f.id}`);
+            if (!container) return;
+            
+            const isVisible = this.visibleFields.has(f.id);
+            const wasVisible = oldVisible.has(f.id);
+            
+            if (isVisible && !wasVisible) {
+              container.classList.remove('hidden');
+              // Trigger animations
+              setTimeout(() => {
+                container.classList.remove('opacity-0', '-translate-y-2');
+              }, 20);
+            } else if (!isVisible && wasVisible) {
+              container.classList.add('opacity-0', '-translate-y-2');
+              // Wait for transition to end before hide
+              setTimeout(() => {
+                if (!this.visibleFields.has(f.id)) {
+                  container.classList.add('hidden');
+                }
+              }, 300);
+            }
+          });
+        });
+
+        // Clean section headers: hide sections if all their fields are hidden
+        this.config.sections.forEach((sec, idx) => {
+          const sectionEl = document.getElementById(`section-card-${idx}`);
+          if (!sectionEl) return;
+
+          const hasVisibleFields = sec.fields.some(f => this.visibleFields.has(f.id));
+          if (hasVisibleFields) {
+            sectionEl.classList.remove('hidden');
+          } else {
+            sectionEl.classList.add('hidden');
+          }
+        });
+      },
+
+      renderForm() {
+        // Render detailed event meta info
+        document.getElementById('form-title').textContent = this.config.title;
+        document.getElementById('form-description').textContent = this.config.description;
+        
+        const badge = document.getElementById('form-meta-badge');
+        let badgeText = 'Active';
+        let badgeClass = 'bg-brand-50 text-brand-600 border border-brand-100';
+        
+        if (this.stats && this.stats.capacity > 0) {
+          if (this.stats.isSoldOut) {
+            badgeText = 'Sold Out';
+            badgeClass = 'bg-slate-100 text-slate-500 border border-slate-200';
+          } else if (this.stats.spotsLeft <= 10) {
+            badgeText = `Only ${this.stats.spotsLeft} spots left!`;
+            badgeClass = 'bg-amber-50 text-amber-600 border border-amber-200 animate-pulse';
+          }
+        }
+        badge.textContent = badgeText;
+        badge.className = `inline-block text-xs font-bold px-2.5 py-1 rounded-full ${badgeClass}`;
+
+        const submitBtn = document.getElementById('submit-form-btn');
+        submitBtn.querySelector('span').textContent = this.config.submitButtonText || 'Complete Registration';
+
+        // Render sections
+        const container = document.getElementById('form-sections-container');
+        container.innerHTML = '';
+
+        this.config.sections.forEach((sec, secIdx) => {
+          const card = document.createElement('div');
+          card.id = `section-card-${secIdx}`;
+          card.className = 'bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5 transition duration-300';
+          
+          card.innerHTML = `
+            <div class="border-b border-slate-100 pb-3 mb-4">
+              <h3 class="text-lg font-bold text-slate-900 font-title leading-snug">${sec.title}</h3>
+              ${sec.description ? `<p class="text-xs text-slate-500 font-light mt-0.5 leading-relaxed">${sec.description}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 gap-5" id="section-fields-${secIdx}"></div>
+          `;
+          
+          const fieldsGrid = card.querySelector(`#section-fields-${secIdx}`);
+          
+          sec.fields.forEach(field => {
+            const fieldContainer = document.createElement('div');
+            fieldContainer.id = `field-container-${field.id}`;
+            fieldContainer.className = 'field-transition transform duration-300';
+            
+            const isVisible = this.visibleFields.has(field.id);
+            if (!isVisible) {
+              fieldContainer.classList.add('hidden', 'opacity-0', '-translate-y-2');
+            }
+
+            const value = this.state[field.id];
+            const error = this.errors[field.id];
+            
+            const element = FieldRendererRegistry.render(
+              field,
+              value,
+              (newVal) => this.handleFieldChange(field.id, newVal),
+              error
+            );
+            
+            fieldContainer.appendChild(element);
+            fieldsGrid.appendChild(fieldContainer);
+          });
+
+          container.appendChild(card);
+          
+          // Initial clean: if section starts with 0 visible fields, hide it immediately
+          const hasVisible = sec.fields.some(f => this.visibleFields.has(f.id));
+          if (!hasVisible) {
+            card.classList.add('hidden');
+          }
+        });
+      },
+
+      reRenderField(fieldId) {
+        const container = document.getElementById(`field-container-${fieldId}`);
+        if (!container) return;
+
+        // Find field config
+        let fieldConfig = null;
+        for (const sec of this.config.sections) {
+          const f = sec.fields.find(field => field.id === fieldId);
+          if (f) {
+            fieldConfig = f;
+            break;
+          }
+        }
+
+        if (!fieldConfig) return;
+        
+        container.innerHTML = '';
+        const value = this.state[fieldId];
+        const error = this.errors[fieldId];
+        
+        const rendered = FieldRendererRegistry.render(
+          fieldConfig,
+          value,
+          (newVal) => this.handleFieldChange(fieldId, newVal),
+          error
+        );
+        container.appendChild(rendered);
+      },
+
+      async handleSubmit(e) {
+        e.preventDefault();
+
+        // 1. Run local client validation
+        const validationResult = ValidationEngine.validateForm(this.config, this.state, this.visibleFields);
+        
+        if (Object.keys(validationResult).length > 0) {
+          this.errors = validationResult;
+          
+          // Re-render only fields with changes/errors
+          this.config.sections.forEach(sec => {
+            sec.fields.forEach(f => {
+              if (this.visibleFields.has(f.id)) {
+                this.reRenderField(f.id);
+              }
+            });
+          });
+
+          NotificationManager.show("Validation failed. Please check form inputs.", "error");
+          
+          // Scroll to first invalid element
+          const firstErrId = Object.keys(this.errors)[0];
+          const el = document.getElementById(`field-container-${firstErrId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+
+        // 2. Submit payload
+        App.showLoading(true, "Registering Now", "Saving details and establishing registration...");
+        
+        try {
+          const payload = {
+            formId: this.config.formId,
+            ...this.state
+          };
+
+          const response = await ApiClient.post('submitRegistration', { payload });
+          
+          // Successful response returns: success: true, data: { submissionId, message }
+          App.showLoading(false);
+          ModalManager.openSuccessModal(response.message, response.submissionId);
+          
+        } catch (err) {
+          console.error(err);
+          App.showLoading(false);
+          ModalManager.openErrorModal(err.message || "An unexpected error occurred during submission.");
+        }
+      }
+    };
+
+    /**
+     * unified App Controller
+     */
+    const App = {
+      init() {
+        this.updateApiUrlIndicators();
+        
+        // Search trigger binding
+        document.getElementById('event-search').addEventListener('input', () => {
+          FormList.applyFilters();
+        });
+
+        // Form submission binding
+        document.getElementById('dynamic-registration-form').addEventListener('submit', (e) => {
+          FormRenderer.handleSubmit(e);
+        });
+
+        // Load initially
+        FormList.fetchAndRender();
+      },
+
+      updateApiUrlIndicators() {
+        const label = document.getElementById('api-status-label');
+        const warning = document.getElementById('api-url-warning');
+        const configBtn = document.getElementById('config-btn');
+        
+        if (Config.apiUrl) {
+          label.textContent = "API URL Active";
+          configBtn.classList.remove('border-slate-200', 'bg-slate-50', 'text-slate-700');
+          configBtn.classList.add('border-emerald-200', 'bg-emerald-50', 'text-emerald-700');
+          warning.classList.add('hidden');
+        } else {
+          label.textContent = "Setup API URL";
+          configBtn.classList.remove('border-emerald-200', 'bg-emerald-50', 'text-emerald-700');
+          configBtn.classList.add('border-slate-200', 'bg-slate-50', 'text-slate-700');
+          warning.classList.remove('hidden');
+        }
+      },
+
+      showLoading(show, title = "Processing", message = "Please wait...") {
+        const overlay = document.getElementById('loading-overlay');
+        if (show) {
+          document.getElementById('loading-title').textContent = title;
+          document.getElementById('loading-message').textContent = message;
+          overlay.classList.remove('hidden');
+          overlay.classList.add('flex');
+        } else {
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+        }
+      },
+
+      navigateToForm() {
+        document.getElementById('event-listing-section').classList.add('hidden');
+        document.getElementById('hero-banner').classList.add('hidden');
+        document.getElementById('form-container').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      navigateToHome() {
+        document.getElementById('form-container').classList.add('hidden');
+        document.getElementById('event-listing-section').classList.remove('hidden');
+        document.getElementById('hero-banner').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Refresh listings on homepage return
+        FormList.fetchAndRender();
+      }
+    };
+
+    // Bootstrap app
+    window.addEventListener('DOMContentLoaded', () => {
+      App.init();
+    });
+
+  </script>
+</body>
+</html>
