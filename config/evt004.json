@@ -1,1 +1,25 @@
-
+{
+  "formId": "EVT004",
+  "title": "Couples Night 2026",
+  "description": "Register for the Couples. Please fill out all details carefully.",
+  "submitButtonText": "Submit Registration",
+  "successMessage": "Registration submitted successfully! Please check your email for the confirmation packet and packing checklist.",
+   "sections": [
+    {
+      "title": "Camper Details",
+      "description": "Provide personal details about the student attending the camp.",
+      "fields": [
+        {
+          "id": "camperName",
+          "label": "Camper's Full Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter camper's name",
+          "validation": {
+            "minLength": 3,
+            "maxLength": 60
+          }
+        }
+      ]
+      ]
+}
