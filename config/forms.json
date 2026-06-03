@@ -25,5 +25,14 @@
     "configFile": "evt003.json",
     "eventDate": "2026-12-15",
     "capacity": 150
+  },
+  {
+    "formId": "EVT004",
+    "title": "Couples Night 2026",
+    "description": "An exciting 1-day gathering for our lovely couples.",
+    "status": "Active",
+    "configFile": "evt004.json",
+    "eventDate": "2026-08-15",
+    "capacity": 150
   }
 ]
