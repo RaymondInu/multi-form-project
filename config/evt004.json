@@ -1,10 +1,10 @@
 {
-  "formId": "EVT004",
-  "title": "Couples Night 2026",
-  "description": "Register for the Couples. Please fill out all details carefully.",
-  "submitButtonText": "Submit Registration",
+  "formId": "EVT002",
+  "title": "Youth Summer Camp 2026",
+  "description": "Register your child for the 2026 Youth Summer Camp. Please fill out all details carefully. The registration requires a signed medical release waiver to be uploaded.",
+  "submitButtonText": "Submit Camp Registration",
   "successMessage": "Registration submitted successfully! Please check your email for the confirmation packet and packing checklist.",
-   "sections": [
+  "sections": [
     {
       "title": "Camper Details",
       "description": "Provide personal details about the student attending the camp.",
@@ -22,14 +22,34 @@
         }
       ]
     },
-     {
-          "id": "agreeRules",
-          "label": "I agree that the camper will abide by all camp safety and behavior guidelines.",
-          "type": "checkbox",
+    {
+      "title": "Parent / Guardian Contact",
+      "description": "Primary emergency contact info.",
+      "fields": [
+        {
+          "id": "parentName",
+          "label": "Parent/Guardian Full Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter parent name"
+        }
+      ]
+    },
+    {
+      "title": "Medical & Permissions",
+      "description": "Important safety and consent details.",
+      "fields": [
+        {
+          "id": "hasMedicalCondition",
+          "label": "Does the camper have any medical conditions, allergies, or regular medications?",
+          "type": "radio",
           "required": true,
           "options": [
-            "I agree to behavioral terms"
+            "Yes",
+            "No"
           ]
         }
+      ]
+    }
   ]
 }
