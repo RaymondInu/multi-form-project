@@ -21,6 +21,15 @@
           }
         }
       ]
-    }
+    },
+     {
+          "id": "agreeRules",
+          "label": "I agree that the camper will abide by all camp safety and behavior guidelines.",
+          "type": "checkbox",
+          "required": true,
+          "options": [
+            "I agree to behavioral terms"
+          ]
+        }
   ]
 }
