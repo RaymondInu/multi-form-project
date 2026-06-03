@@ -21,7 +21,7 @@
     "formId": "EVT003",
     "title": "Family Camp 2026",
     "description": "An exciting 4-day summer retreat for regular members.",
-    "status": "InActive",
+    "status": "Active",
     "configFile": "evt003.json",
     "eventDate": "2026-12-15",
     "capacity": 150
